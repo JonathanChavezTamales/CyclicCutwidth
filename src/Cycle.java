@@ -8,6 +8,7 @@ public class Cycle {
 	
 	private int size;
 	private int[] content;
+	private int cutwidth = -1;
 	
 	public Cycle(int[] vertices) {
 		this.size = vertices.length;
@@ -22,12 +23,35 @@ public class Cycle {
 		}
 	}
 	
+	public Cycle(Cycle c) {
+		this.size = c.size();
+		this.content = c.getContent();
+	}
+	
 	
 	
 	public Cycle[] neighborhood() {
 		// Retorna un conjunto de ciclos (permutaciones) que son el vecindario. Debe ser en tiempo polinomial
+		Cycle[] neighbors = new Cycle[size*(size-1)/2];
 		
-		return null;
+		int[] currentPermutation = this.content;
+		int cont = 0;
+		for(int i=0; i<this.size()-1; i++) {
+			for(int j=i+1; j<this.size(); j++) {
+				int[] newPerm = currentPermutation.clone();
+				// Swap
+				int temp = newPerm[i];
+				newPerm[i] = newPerm[j];
+				newPerm[j] = temp;
+				
+				neighbors[cont] = new Cycle(newPerm);
+				cont++;
+				
+			}
+			
+		}
+		
+		return neighbors;
 	}
 	
 	public void perturbate() {
@@ -48,6 +72,10 @@ public class Cycle {
 	
 	public int[] getContent() {
 		return this.content;
+	}
+	
+	public int getCutwidth() {
+		return this.cutwidth;
 	}
 	
 	public String toString() {
@@ -121,6 +149,8 @@ public class Cycle {
 		for(int i=0; i<this.size(); i++) {
 			maxi = maxi < cycleEdges[i] ? cycleEdges[i] : maxi;
 		}
+		
+		this.cutwidth = maxi;
 		return maxi;
 	}
 }
