@@ -36,7 +36,7 @@ public class Main {
 	
 	public static int minCCW(ArrayList<Edge> edges) {
 		
-		int[] label  = {2, 0 , 1, 3};
+		int[] label  = {2, 0, 1, 3};
 		Cycle s0 = new Cycle(label);
 		
 		int minCutwidth = 999999999;
