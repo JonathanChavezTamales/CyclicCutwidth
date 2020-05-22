@@ -43,7 +43,7 @@ public class Permutations {
     }
 
     public static void main(String[] args) {
-        int[] numeros  = {1, 2, 3};
+        int[] numeros  = {1, 2, 3, 4};
 
         Permutations p = new Permutations(numeros);
         
