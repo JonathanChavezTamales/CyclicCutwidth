@@ -39,7 +39,7 @@ public class Main {
 		int[] label  = {2, 0, 1, 3};
 		Cycle s0 = new Cycle(label);
 		
-		int minCutwidth = 999999999;
+		int minCutwidth = (int) Double.POSITIVE_INFINITY;
 		
 		int s0cutWidth = s0.cutwidth(edges);
 		
