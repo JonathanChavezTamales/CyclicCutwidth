@@ -1,22 +1,17 @@
 import java.util.ArrayList;
-
+import java.util.Random;
 public class Cycle {
 	// La clase ciclo contiene la permutacion de los vertices enumerados de 1 a n.
-	// size: numero de vertices del ciclo
 	// content: secuencia de enteros que indican el labeling (permutacion) del ciclo
 	
-	
-	private int size;
 	private int[] content;
 	private int cutwidth = -1;
 	
 	public Cycle(int[] vertices) {
-		this.size = vertices.length;
 		this.content = vertices;
 	}
 	
 	public Cycle(int n) {
-		this.size = n;
 		this.content = new int[n];
 		for(int i=0; i<n; i++) {
 			content[i] = i;
@@ -27,7 +22,6 @@ public class Cycle {
 		this.size = c.size();
 		this.content = c.getContent();
 	}
-	
 	
 	
 	public Cycle[] neighborhood() {
@@ -56,18 +50,40 @@ public class Cycle {
 	
 	public void perturbate() {
 		// Perturba el ciclo
+		Random rand = new Random();
+
+		int iterations, //numero de veces que se va a perturbar el ciclo
+			perturbationForce, 
+			displacement;
+
+		iterations = rand.nextInt(10) + 1; //mas 1 para que haga por lo menos una iteracion
+
+		for (int i=0; i<iterations; i++) {
+			perturbationForce = 3 + rand.nextInt(this.size()-3 + 1); //+-3 porque la fuerza minima es de 3
+			displacement = rand.nextInt(this.size() - perturbationForce + 1); //despalzamiento de indice de inicio
+			this.perturbate(perturbationForce, displacement);
+		}
+	}
+
+	private void perturbate(int perturbationForce, int displacement) {
+		int temp;
+		for (int i=0; i<perturbationForce/2; i++) { //invierte el bloque especificado del cyclo
+			temp = this.content[i+displacement];
+			this.content[i+displacement] = this.content[displacement+perturbationForce-i-1];
+			this.content[displacement+perturbationForce-i-1] = temp;
+		}
 	}
 	
 	public int getPos(int u) throws Exception {
 		// Dado el vertice u en el candidato, regresa el lugar que ocupa en el ciclo
-		for(int i=0; i<this.size; i++) {
+		for(int i=0; i<this.size(); i++) {
 			if(this.content[i] == u) return i;
 		}
 		throw new Exception("No se encontró vértice en H");
 	}
 	
 	public int size() {
-		return this.size;
+		return this.content.length;
 	}
 	
 	public int[] getContent() {
@@ -83,9 +99,9 @@ public class Cycle {
 		
 		String s = "";
 		
-		for(int i=0; i<size; i++) {
+		for(int i=0; i<size(); i++) {
 			s += content[i];
-			if(i != size-1)
+			if(i != size()-1)
 			s += " = ";
 		}
 		
@@ -153,4 +169,17 @@ public class Cycle {
 		this.cutwidth = maxi;
 		return maxi;
 	}
+
+
+	public static void main(String[] args) {
+		Cycle c = new Cycle(8);
+
+		System.out.println(c);
+
+		c.perturbate();
+
+		System.out.println(c);
+	}
 }
+
+

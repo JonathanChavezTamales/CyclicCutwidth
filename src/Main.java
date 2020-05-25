@@ -37,9 +37,10 @@ public class Main {
 	
 	public static int minCCW(ArrayList<Edge> edges, int vertices, int totalIterations) {
 		
-		Cycle s0 = new Cycle(vertices);
+		int[] label  = {2, 0, 1, 3};
+		Cycle s0 = new Cycle(label);
 		
-		int minCutwidth = 999999999;
+		int minCutwidth = (int) Double.POSITIVE_INFINITY; //Infinito positivo
 		
 		int s0cutWidth = s0.cutwidth(edges);
 		
