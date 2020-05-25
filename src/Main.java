@@ -29,12 +29,13 @@ public class Main {
 			}
 			
 			
-			System.out.println(minCCW(edges));
+			System.out.println(minCCW(edges, n, 10));
+			
 			
 			
 	}
 	
-	public static int minCCW(ArrayList<Edge> edges) {
+	public static int minCCW(ArrayList<Edge> edges, int vertices, int totalIterations) {
 		
 		int[] label  = {2, 0, 1, 3};
 		Cycle s0 = new Cycle(label);
@@ -45,17 +46,28 @@ public class Main {
 		
 		minCutwidth = minCutwidth < s0cutWidth ? minCutwidth : s0cutWidth;
 		
+		Cycle[] neighborhood = s0.neighborhood();
 		
 		
-		//3. Hace local search y obtenemos s*
 		
-			// while conditions not met
 		
-			// 3.1 Hacemos local search y lo asignamos a s*
+			while(totalIterations > 0) {
+		
+				//s0 = localSearch(neighborhood, edges) 
 			
-			// 3.2 Perturbamos s*
-		
-			// 3.3 Se verifican los criterios de termino
+				//perturbate(s0)
+				
+				//neighborhood = s0.neighborhood();
+				
+				//s1 = localSearch(neighborhood, edges);
+				
+				// if s0.cutwidth <= s1.cutwidth return
+				// else s0 = s1;
+				
+
+				totalIterations--;
+				
+			}
 		
 		// retorna cutwidth de G usando s*
 		
@@ -63,7 +75,7 @@ public class Main {
 	}
 	
 	
-	public static Cycle localSearch(Cycle[] neighborhood) {
+	public static Cycle localSearch(Cycle[] neighborhood, ArrayList<Edge> edges) {
 		// Retorna aquel ciclo en el vecindario que tenga menor cutwidth
 		
 		return null;
