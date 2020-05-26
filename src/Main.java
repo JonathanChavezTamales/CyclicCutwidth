@@ -29,56 +29,85 @@ public class Main {
 			}
 			
 			
-			System.out.println(minCCW(edges, n, 10));
+			System.out.println(minCCW(edges, n, 13, 10, 5));
 			
 			
 			
 	}
 	
-	public static int minCCW(ArrayList<Edge> edges, int vertices, int totalIterations) {
-		
-		int[] label  = {2, 0, 1, 3};
-		Cycle s0 = new Cycle(label);
-		
-		int minCutwidth = (int) Double.POSITIVE_INFINITY; //Infinito positivo
-		
-		int s0cutWidth = s0.cutwidth(edges);
-		
-		minCutwidth = minCutwidth < s0cutWidth ? minCutwidth : s0cutWidth;
-		
-		Cycle[] neighborhood = s0.neighborhood();
+	public static int minCCW(ArrayList<Edge> edges, int vertices, int maxIterations, int maxIterationsWithoutNewMinimum, int maxPerturbateCollisions) {
+		// Retorna el min cutwidth utilizando hill climbing
+		// edges: array de pares de vertices que representan una arista bidireccional
+		// vertices: número de vértices del grafo
+		// CONDICIONES DE TERMINACIÓN:
+		// totalIterations: máximo de iteraciones a ejecutar
+		// iterationsWithoutNewMinimum: iteraciones seguidas sin encontrar nuevo mínimo
+		// maxPerturbateCollisions: número máximo de permutaciones colisionadas
 		
 		
+		Cycle c = new Cycle(vertices); // Empezamos con el primer ciclo c0
+		
+		int currentIterationsWithoutNewMinimum = 0;
+		int currentPerturbateCollisions = 0;
+		
+		c = localSearch(c, edges); // Obtiene el minimo del vecindario de c0
+		
+		Cycle min = new Cycle(c);
 		
 		
-			while(totalIterations > 0) {
-		
-				//s0 = localSearch(neighborhood, edges) 
+		while (maxIterations > 0 && currentIterationsWithoutNewMinimum < maxIterationsWithoutNewMinimum  && currentPerturbateCollisions < maxPerturbateCollisions) { // Condiciones de terminacion
 			
-				//perturbate(s0)
-				
-				//neighborhood = s0.neighborhood();
-				
-				//s1 = localSearch(neighborhood, edges);
-				
-				// if s0.cutwidth <= s1.cutwidth return
-				// else s0 = s1;
-				
-
-				totalIterations--;
-				
+			
+			
+			c = localSearch(c, edges);
+						
+			if(c.getCutwidth() >= min.getCutwidth()) {
+				currentIterationsWithoutNewMinimum++;
+				c.perturbate();
 			}
+			else {
+				min = c;
+			}
+			
+			// Implementar termino por colision
+			
+			
+			
+			maxIterations--;
+		}
 		
-		// retorna cutwidth de G usando s*
 		
-		return minCutwidth;
+		if(maxIterations == 0) {
+			System.out.println("Terminado por maxIter");
+		}
+		if(currentIterationsWithoutNewMinimum == maxIterationsWithoutNewMinimum) {
+			System.out.println("Terminado por maxIterationsWithoutNewMinimum");
+		}
+		if(currentPerturbateCollisions == maxPerturbateCollisions) {
+			System.out.println("Terminado por maxPerturbateCollisions");
+		}
+		
+		return min.getCutwidth();
+		
 	}
 	
 	
-	public static Cycle localSearch(Cycle[] neighborhood, ArrayList<Edge> edges) {
-		// Retorna aquel ciclo en el vecindario que tenga menor cutwidth
+	public static Cycle localSearch(Cycle s, ArrayList<Edge> edges) {
+		//Retorna el cycle con el menor cutwidth entre todos sus vecinos
 		
-		return null;
+		Cycle min = new Cycle(s);
+		min.cutwidth(edges);
+		Cycle[] neighborhood = s.neighborhood();
+				
+		//Recorre cada elemento del neighborhood
+		for(Cycle neighbor : neighborhood) {
+			//Actualiza la solución más pequeña
+			if (neighbor.cutwidth(edges) < min.getCutwidth()) {
+				min = neighbor;
+			}
+		}
+		return min;
 	}
+	
 
 }

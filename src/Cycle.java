@@ -5,10 +5,12 @@ public class Cycle {
 	// content: secuencia de enteros que indican el labeling (permutacion) del ciclo
 	
 	private int[] content;
+	private int size;
 	private int cutwidth = -1;
 	
 	public Cycle(int[] vertices) {
-		this.content = vertices;
+		this.content = vertices.clone();
+		this.size = vertices.length;
 	}
 	
 	public Cycle(int n) {
@@ -16,11 +18,13 @@ public class Cycle {
 		for(int i=0; i<n; i++) {
 			content[i] = i;
 		}
+		this.size = n;
 	}
 	
 	public Cycle(Cycle c) {
 		this.size = c.size();
-		this.content = c.getContent();
+		this.cutwidth = c.getCutwidth();
+		this.content = c.getContent().clone();
 	}
 	
 	
@@ -83,7 +87,7 @@ public class Cycle {
 	}
 	
 	public int size() {
-		return this.content.length;
+		return this.size;
 	}
 	
 	public int[] getContent() {
@@ -170,16 +174,7 @@ public class Cycle {
 		return maxi;
 	}
 
-
-	public static void main(String[] args) {
-		Cycle c = new Cycle(8);
-
-		System.out.println(c);
-
-		c.perturbate();
-
-		System.out.println(c);
-	}
+ 
 }
 
 
