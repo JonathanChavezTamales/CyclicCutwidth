@@ -29,8 +29,13 @@ public class Main {
 				edges.add(new Edge(a, b));
 			}
 			
+			int maxIterations = Integer.parseInt(args[0]);
+			int maxTimeMilis = Integer.parseInt(args[1]);
+			int maxConsecutiveCollisions = Integer.parseInt(args[2]);
+			int maxIterationsWithoutChange = Integer.parseInt(args[3]);
 			
-			System.out.println(minCCW(edges, n, 2000, 180000, 10, 600));
+			
+			System.out.println(minCCW(edges, n, maxIterations, maxTimeMilis, maxConsecutiveCollisions, maxIterationsWithoutChange));
 			
 			
 			
