@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -29,13 +30,13 @@ public class Main {
 			}
 			
 			
-			System.out.println(minCCW(edges, n, 13, 10, 5));
+			System.out.println(minCCW(edges, n, 2000, 180000, 10, 600));
 			
 			
 			
 	}
 	
-	public static int minCCW(ArrayList<Edge> edges, int vertices, int maxIterations, int maxIterationsWithoutNewMinimum, int maxPerturbateCollisions) {
+	public static int minCCW(ArrayList<Edge> edges, int vertices, int maxIterations, int maxTimeMilis, int maxConsecutiveCollisions, int maxIterationsWithoutChange) {
 		// Retorna el min cutwidth utilizando hill climbing
 		// edges: array de pares de vertices que representan una arista bidireccional
 		// vertices: número de vértices del grafo
@@ -44,49 +45,58 @@ public class Main {
 		// iterationsWithoutNewMinimum: iteraciones seguidas sin encontrar nuevo mínimo
 		// maxPerturbateCollisions: número máximo de permutaciones colisionadas
 		
+		HashSet<Integer> set = new HashSet<Integer>();
+		int consecutiveCollisions = 0;
+		int itsWithoutChange = 0;
+		long start = System.currentTimeMillis();
+
 		
 		Cycle c = new Cycle(vertices); // Empezamos con el primer ciclo c0
 		
-		int currentIterationsWithoutNewMinimum = 0;
-		int currentPerturbateCollisions = 0;
 		
 		c = localSearch(c, edges); // Obtiene el minimo del vecindario de c0
+		set.add(c.hashCode());
 		
 		Cycle min = new Cycle(c);
 		
+		int iter = 0;
 		
-		while (maxIterations > 0 && currentIterationsWithoutNewMinimum < maxIterationsWithoutNewMinimum  && currentPerturbateCollisions < maxPerturbateCollisions) { // Condiciones de terminacion
+		while (iter < maxIterations &&  System.currentTimeMillis() - start < maxTimeMilis && consecutiveCollisions < maxConsecutiveCollisions && itsWithoutChange<maxIterationsWithoutChange) { // Condiciones de terminacion
 			
 			
+			c.perturbate();
+			set.add(c.hashCode());
+			
+			
+			consecutiveCollisions = 0;
+			
+			// Si encuentra de nuevo esa permutacion, actualizar contador de colisiones seguidas y perturbar de nuevo.
+			while(set.contains(c.hashCode())) { // Preturbate collision
+				consecutiveCollisions++;
+				c.perturbate();
+				if(consecutiveCollisions >= maxConsecutiveCollisions) {
+					break;
+				}
+			}
 			
 			c = localSearch(c, edges);
-						
-			if(c.getCutwidth() >= min.getCutwidth()) {
-				currentIterationsWithoutNewMinimum++;
-				c.perturbate();
-			}
-			else {
+			
+			// Si no cambia el valor en la iteracion, actualizar contador.
+			if(c.getCutwidth() < min.getCutwidth()) {
 				min = c;
+				itsWithoutChange = 0;
 			}
+			else{
+				itsWithoutChange++;
+			}
+				
 			
-			// Implementar termino por colision
 			
-			
-			
-			maxIterations--;
+			System.out.println(iter + "," +min.getCutwidth());
+			iter++;
 		}
 		
-		
-		if(maxIterations == 0) {
-			System.out.println("Terminado por maxIter");
-		}
-		if(currentIterationsWithoutNewMinimum == maxIterationsWithoutNewMinimum) {
-			System.out.println("Terminado por maxIterationsWithoutNewMinimum");
-		}
-		if(currentPerturbateCollisions == maxPerturbateCollisions) {
-			System.out.println("Terminado por maxPerturbateCollisions");
-		}
-		
+		System.out.println(System.currentTimeMillis() - start);
 		return min.getCutwidth();
 		
 	}
@@ -97,16 +107,24 @@ public class Main {
 		
 		Cycle min = new Cycle(s);
 		min.cutwidth(edges);
-		Cycle[] neighborhood = s.neighborhood();
-				
-		//Recorre cada elemento del neighborhood
-		for(Cycle neighbor : neighborhood) {
-			//Actualiza la solución más pequeña
-			if (neighbor.cutwidth(edges) < min.getCutwidth()) {
-				min = neighbor;
+		boolean foundMin = true;
+		
+		while(foundMin) {
+			foundMin = false;
+			Cycle[] neighborhood = s.neighborhood();
+					
+			//Recorre cada elemento del neighborhood
+			for(Cycle neighbor : neighborhood) {
+				//Actualiza la solución más pequeña
+				if (neighbor.cutwidth(edges) < min.getCutwidth()) {
+					min = neighbor;
+					foundMin = true;
+				}
 			}
+			s = min;
 		}
-		return min;
+		
+		return s;
 	}
 	
 

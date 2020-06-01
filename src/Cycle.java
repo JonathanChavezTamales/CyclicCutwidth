@@ -52,6 +52,20 @@ public class Cycle {
 		return neighbors;
 	}
 	
+	public int hashCode() {
+		int hc = 1;
+        for(int i=0; i<this.size; i++) {
+        	if(i%3 == 0) {
+        		hc -= (this.content[i]+1+i)%1000000007;
+        	}
+        	else if(i%2 == 0) {
+        		hc *= (this.content[i]+1+i)%1000000007;
+        	}
+        	hc %= 1000000007;
+        }
+        return hc;
+    }
+	
 	public void perturbate() {
 		// Perturba el ciclo
 		Random rand = new Random();
