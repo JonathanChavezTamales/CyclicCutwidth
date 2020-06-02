@@ -46,7 +46,6 @@ public class Cycle {
 				cont++;
 				
 			}
-			
 		}
 		
 		return neighbors;

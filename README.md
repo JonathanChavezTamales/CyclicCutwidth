@@ -1,6 +1,6 @@
 # Cyclic Cutwidth Minimization
 
-# Instrucciones de compilación
+## Instrucciones de compilación
 
 Los archivos fuente están en `src`. Para compilar corra `javac src/*.java -d bin/`.
 
