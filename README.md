@@ -19,9 +19,9 @@ Ejemplo: `java Main < ../instancias/HarwellBoeing/small/bcspwr01/bcspwr01.mtx.rn
 
 ## Autores
 
-Jonathan de Jesús Chávez Tabares A01636160
-Carolina Pérez Alvarado A01631526 
-Agustín Quintanar de la Mora A01636142
+- Jonathan de Jesús Chávez Tabares A01636160
+- Carolina Pérez Alvarado A01631526 
+- Agustín Quintanar de la Mora A01636142
 
 Gracias al Profe Eduardo Rodríguez Tello por su ayuda.
 
