@@ -165,12 +165,12 @@ public class Cycle {
 					else if(Math.abs(hostU - hostV) > this.size() - Math.abs(hostU - hostV)) { // Ruta exterior
 						if(hostU < hostV) {
 							for(int j=hostU-1; j>=hostV; j--) {
-								cycleEdges[j%4]++;
+								cycleEdges[j]++;
 							}
 						}
 						else {
 							for(int j=hostV; j<hostU; j++) {
-								cycleEdges[j%4]++;
+								cycleEdges[j]++;
 							}
 						}
 					}
