@@ -1,5 +1,10 @@
 # Cyclic Cutwidth Minimization
 
+
+Se puede ver una explicación en video aquí:
+(https://www.youtube.com/watch?v=zLtWxIXkW6I)[Cyclic Cutwidth Minimization - Jonathan Chávez - Youtube]
+(https://www.youtube.com/watch?v=3IVKrpaZZdo)[Cyclic Cutwidth Minimization - Carol Pérez - Youtube]
+
 # Instrucciones de compilación
 
 Los archivos fuente están en `src`. Para compilar corra `javac src/*.java -d bin/`.
