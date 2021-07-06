@@ -11,12 +11,10 @@ public class Main {
 	public static void main(String[] args) {
 			Scanner sc = new Scanner(System.in);
 			
-			
 			int n = sc.nextInt(); // Número de vértices
 			
 			ArrayList<Edge> edges = new ArrayList<Edge>();
 				
-			
 			while(true) { // Recibe aristas de nodos, (u, v), cuando ya no haya más se escribe -1 -1
 				int a = sc.nextInt();
 				int b = sc.nextInt();
@@ -34,10 +32,7 @@ public class Main {
 			int maxConsecutiveCollisions = Integer.parseInt(args[2]);
 			int maxIterationsWithoutChange = Integer.parseInt(args[3]);
 			
-			
 			System.out.println(minCCW(edges, n, maxIterations, maxTimeMilis, maxConsecutiveCollisions, maxIterationsWithoutChange));
-			
-			
 			
 	}
 	
